@@ -1,0 +1,91 @@
+<mat-toolbar class="header secondary">
+  <span style="font-size: 17px;">
+    Terms
+  </span>
+
+  <span class="spacer"></span>
+</mat-toolbar>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content>
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="isLoading" class="ion-padding ion-text-center">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <ion-text *ngIf="showError"><h5 class="ion-padding ion-text-center">{{ errMessage }}</h5></ion-text>
+
+  <div class="ion-padding" *ngIf="activeTermCard.length > 0">
+    <ion-text color="dark"><h5 class="ion-text-left">Current Term</h5></ion-text>
+
+    <app-detail-card *ngFor="let card of activeTermCard"
+     showImage="true" altImage="text" [imageText]="card.imageText" [detailsData]="card.details"
+     (btnClick)="card.btnClick()"></app-detail-card>
+  </div>
+
+  <div class="ion-padding">
+    <mat-accordion>
+
+      <div class="" *ngFor="let card of sessionCards">
+
+        <mat-expansion-panel  (opened)="card.onOpen()" (closed)="card.onClose()">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <strong>{{ card.title }}</strong>
+            </mat-panel-title>
+            <mat-panel-description>
+              {{ card.description }}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <div>
+          
+          <ion-refresher slot="fixed" (ionRefresh)="card.refresh($event)">
+            <ion-refresher-content>
+            </ion-refresher-content>
+          </ion-refresher>
+
+          <ion-text *ngIf="card.showError"><h5 class="ion-padding ion-text-center">{{ card.errMessage }}</h5></ion-text>
+
+          <div *ngIf="card.isLoading" class="ion-padding ion-text-center">
+            <ion-spinner name="crescent"></ion-spinner>
+          </div>
+
+          <div class="detail-cards-container">
+            <div class="detail-card" *ngFor="let termCard of card.termCards">
+              <app-detail-card 
+              [showImage]="true" altImage="text" [imageText]="termCard.imageText" 
+              [detailsData]="termCard.details" (btnClick)="termCard.btnClick()"></app-detail-card>
+            </div>
+          </div>
+
+          <mat-action-row>
+            <ion-button size="small" (click)="card.actionClick()">View</ion-button>
+          </mat-action-row>
+        </div>
+        </mat-expansion-panel>
+        <br>
+
+      </div>
+
+    </mat-accordion>
+    
+  </div>
+
+  <ion-fab cdkDrag cdkDragBoundary=".main-content" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="custom-secondary">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button (click)="addTerm()" matTooltip="Add Term"><ion-icon name="book"></ion-icon></ion-fab-button>
+      <ion-fab-button (click)="addSession()" matTooltip="Add Session"><ion-icon name="school"></ion-icon></ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+
+  <ion-infinite-scroll #scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

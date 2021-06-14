@@ -1,0 +1,27 @@
+<app-modal-header title="View Student Requests" (dismiss)="dismissModal()"></app-modal-header>
+
+<ion-content class="ion-padding">
+  <div *ngIf="isLoading" class="ion-padding ion-text-center">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <div class="requests detail-cards-container">
+    <div class="detail-card" *ngFor="let card of cards">
+      <app-detail-card 
+        [showImage]="card.showImage" 
+        [altImage]="card.altImage" 
+        [imageText]="card.imageText" 
+        [detailsData]="card.details"
+        [imgSrc]="card.imageSrc"
+        [showMenu]="true"
+        btnText="Edit"
+        (btnClick)="edit(card)"
+        (menuOpen)="showOptions($event, card)"
+        btnText="Edit"></app-detail-card>
+    </div>
+  </div>
+
+  <ion-infinite-scroll #scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

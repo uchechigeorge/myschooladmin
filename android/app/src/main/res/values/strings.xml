@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">MySchoolAdmin</string>
+    <string name="title_activity_main">MySchoolAdmin</string>
+    <string name="package_name">com.profeworld.myschooladmin</string>
+    <string name="custom_url_scheme">com.profeworld.myschooladmin</string>
+</resources>

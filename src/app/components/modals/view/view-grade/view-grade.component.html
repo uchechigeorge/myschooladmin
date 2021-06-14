@@ -1,0 +1,33 @@
+<app-modal-header title="View Grades" (dismiss)="dismissModal()"></app-modal-header>
+
+<ion-content class="ion-padding main-content">
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content>
+
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-text *ngIf="showError"><h5 class="ion-padding ion-text-center">{{ errMessage }}</h5></ion-text>
+  <div *ngIf="isLoading" class="ion-padding ion-text-center">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <div class="detail-cards-container">
+    <div class="detail-card" *ngFor="let card of cards">
+      <app-detail-card (btnClick)="view(card)"
+        [showImage]="card.showImage" [altImage]="card.altImage" [imgSrc]="card.imageSrc"
+        [imageText]="card.imageText" [detailsData]="card.details"></app-detail-card>
+    </div>
+  </div>
+
+  <ion-fab cdkDrag cdkDragBoundary=".main-content" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="custom-secondary" (click)="add()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-infinite-scroll #scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

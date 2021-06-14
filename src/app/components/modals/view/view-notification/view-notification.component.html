@@ -1,0 +1,46 @@
+<app-modal-header title="View Notification" (dismiss)="dismissModal()"></app-modal-header>
+
+<ion-content class="ion-padding ion-text-center">
+  <app-view-profile-pic (modalClosed)="getNotification()" updateType="notification" [imgSrc]="DP" canView="true" [userId]="notificationId"></app-view-profile-pic>
+  <br>
+  <div class="divider"></div>
+  <br>
+
+  <div *ngIf="isLoading" class="ion-padding ion-text-center">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <ion-text *ngIf="showError"><h5 class="ion-padding ion-text-center">{{ errMessage }}</h5></ion-text>
+
+
+  <form class="details-form" *ngIf="!isLoading && !showError">
+    
+    <div *ngFor="let input of details">
+      <ion-text class="ion-text-left" *ngIf="input.hasHeader"><h4>{{ input.headerTitle }}</h4></ion-text>
+      <app-edit-details-input
+      [label]="input.label" 
+      [model]="input.model"
+      [type]="input.type"
+      [icon]="input.icon"
+      [validators]="input.valiators"
+      [noEdit]="input.noEdit"
+      [selectMultiple]="input.selectMultiple"
+      [selectOptions]="input.selectOptions"
+      [multipleSelectOptions]="input.multipleSelectOptions"
+      [updateInput]="input.updateInput"
+      (onChangeEvent)="input.inputChange($event)"
+      [showHint]="false"
+      [maxLength]="input.maxLength"
+      ></app-edit-details-input>
+      <br><br>
+    </div>
+
+    <div class="btn-container ion-padding">
+
+      <ion-button expand="block" (click)="showDeleteAlert()" [disabled]="showError">
+        <ion-spinner *ngIf="isDeleting" name="crescent"></ion-spinner>
+        <ion-text *ngIf="!isDeleting">Delete</ion-text>
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

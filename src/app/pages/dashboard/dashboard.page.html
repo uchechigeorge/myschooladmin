@@ -1,0 +1,129 @@
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content>
+
+    </ion-refresher-content>
+  </ion-refresher>
+  <div *ngIf="isLoading" class="ion-padding ion-text-center">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" sizeLg="9">
+        <div class="student-details">
+      
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+
+                <div class="card">
+                  <div class="picture">
+                    <ion-avatar class="avatar" style="background: rgba(var(--ion-color-custom-primary-rgb), 0.24);">
+                      <ion-icon name="people" color="custom-primary"></ion-icon>
+                    </ion-avatar>
+                  </div>
+      
+                  <div class="text-details">
+                    <ion-text class="value"><strong>{{ noOfStudents }}</strong></ion-text><br>
+                    <ion-text class="title"> Total students </ion-text>
+                  </div>
+                </div>
+
+              </ion-col>
+
+              <ion-col>
+
+                <div class="card">
+                  <div class="picture">
+                    <ion-avatar class="avatar" style="background: rgba(var(--ion-color-primary-rgb), 0.24);">
+                      <ion-icon name="checkmark" color="primary"></ion-icon>
+                    </ion-avatar>
+                  </div>
+      
+                  <div class="text-details">
+                    <ion-text class="value"><strong>{{ noOfActiveStudents }}</strong></ion-text><br>
+                    <ion-text class="title"> Active students </ion-text><br>
+                    <ion-note class="note">{{ noOfActiveStudents ? ((noOfActiveStudents / noOfStudents) * 100).toFixed(2) + '%' : '' }}</ion-note>
+                  </div>
+                </div>
+
+              </ion-col>
+
+              <ion-col>
+
+                <div class="card">
+                  <div class="picture">
+                    <ion-avatar class="avatar" style="background: rgba(var(--ion-color-danger-rgb), 0.24);">
+                      <ion-icon name="close" color="danger"></ion-icon>
+                    </ion-avatar>
+                  </div>
+      
+                  <div class="text-details">
+                    <ion-text class="value"><strong>{{ noOfInactiveStudents }}</strong></ion-text><br>
+                    <ion-text class="title"> Inactive Students </ion-text><br>
+                    <ion-note class="note">{{ noOfInactiveStudents ? ((noOfInactiveStudents / noOfStudents) * 100).toFixed(2) + '%' : '' }}</ion-note>
+                  </div>
+                </div>
+
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          
+        </div>
+
+        <div class="graph-area grey-area">
+          <canvas class="studentChart"></canvas>
+        </div>
+        
+        <br>
+        <div class="other-details">
+          <ion-grid>
+            <ion-row>
+              <ion-col sizeMd="12" sizeLg="6">
+                <div class="other grey-area">
+                  <div class="text">
+                    <p> <ion-icon name="man" color="custom-primary" ></ion-icon> Teachers</p> <p><strong>{{ noOfTeachers }}</strong></p>
+                  </div>
+                  <div class="text">
+                    <p> <ion-icon name="library" color="secondary"></ion-icon> Courses</p> <p><strong>{{ noOfCourses }}</strong></p>
+                  </div>
+                  <div class="text">
+                    <p> <ion-icon name="business" color="danger"></ion-icon> Classes</p> <p><strong>{{ noOfClasses }}</strong></p>
+                  </div>
+                </div>
+              </ion-col>
+
+              <ion-col sizeMd="12" sizeLg="6">
+                <div class="gender-details grey-area">
+                  <canvas class="genderChart"></canvas>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+
+          
+        </div>
+      </ion-col>
+
+      <ion-col size="12" sizeLg="3">
+        <div class="notification-area grey-area">
+          <p style="margin-left: 10px;" class=""><strong>Reminders</strong></p>
+          
+          <app-notification-item *ngFor="let reminder of reminders"
+            [message]="reminder.message"
+            [title]="reminder.title"
+            [icon]="reminder.icon"
+            [iconColor]="reminder.iconColor"
+            [avatarColor]="reminder.avatarColor"
+            [data]="reminder.data"
+          ></app-notification-item>
+        </div>
+      </ion-col>
+
+    </ion-row>
+
+    
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,129 @@
+<app-modal-header title="Set Admin Roles" (dismiss)="dismissModal()"></app-modal-header>
+<ion-content class="ion-padding ion-text-left">
+
+  <div class="profile-avatar">
+    <div class="picture">
+      <ion-avatar class="ion-text-center">
+        <ion-icon color="medium" name="person"></ion-icon>
+      </ion-avatar>
+    </div>
+  </div>
+
+  <ion-text *ngIf="showError"><h5 class="ion-padding ion-text-center">{{ errMessage }}</h5></ion-text>
+  <div *ngIf="isLoading" class="ion-padding ion-text-center">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <div class="" *ngIf="hasLoaded">
+    <form class="details-form">
+
+      <ion-text><h5>Select Roles for admin</h5></ion-text>
+      
+      <div *ngFor="let item of details">
+        <ion-text class="ion-text-left" *ngIf="item.hasHeader"><h4>{{ item.headerTitle }}</h4></ion-text>
+        <app-edit-details-input
+        [label]="item.label" 
+        [model]="item.model"
+        [type]="item.type"
+        [inputmode]="item.inputmode"
+        [icon]="item.icon"
+        [directives]="item.directives"
+        [noEdit]="item.noEdit"
+        [suffix]="item.suffix"
+        [validators]="item.valiators"
+        [showSecondaryBtn]="item.showSecondaryBtn"
+        [secondaryText]="item.secondaryText"
+        [selectMultiple]="item.selectMultiple"
+        [selectOptions]="item.selectOptions"
+        [multipleSelectOptions]="item.multipleSelectOptions"
+        [updateInput]="item.updateInput"
+        (onChangeEvent)="item.inputChange($event)"
+        (secondaryBtnEvent)="item.secondaryBtnCLick()"
+        ></app-edit-details-input>
+        <br><br>
+      </div>
+    </form>
+      
+    <form class="details-form" [formGroup]="formGroup" (input)="roleChange()">
+      <div class="ion-text-right">
+        <ion-button *ngIf="valueHasChanged" (click)="reset()" size="small" fill="outline" class="outline">
+          <ion-icon name="refresh"></ion-icon>
+          Reset
+        </ion-button>
+        <ion-button size="small" (click)="uploadRoles()" [disabled]="formGroup.invalid">
+          <ion-text *ngIf="isVerifying">Editing ...</ion-text>
+          <ion-text *ngIf="!isVerifying">Edit Roles</ion-text>
+        </ion-button>
+      </div>
+      <div class="check-group" formGroupName="view">
+        <mat-checkbox formControlName="viewAll"
+          [checked]="viewAll"
+          [indeterminate]="someViewsComplete"
+          (change)="setViewAll($event.checked)"
+        >View All
+        </mat-checkbox>
+        <div class="checkbox-child-container">
+          <mat-checkbox formControlName="viewStudent">View Students</mat-checkbox>
+          <br>
+          <mat-checkbox formControlName="viewTeacher">View Teachers</mat-checkbox>
+          <br>
+          <mat-checkbox formControlName="viewCourse">View Courses</mat-checkbox>
+          <br>
+          <mat-checkbox formControlName="viewClass">View Classes</mat-checkbox>
+        </div>
+      </div>
+
+      <div class="check-group" formGroupName="add">
+        <mat-checkbox formControlName="addAll"
+          [checked]="addAll"
+          [indeterminate]="someAddComplete"
+          (change)="setAddAll($event.checked)"
+        >Add All
+        </mat-checkbox>
+        <div class="checkbox-child-container">
+          <mat-checkbox formControlName="addStudent">Add Students</mat-checkbox>
+          <br>
+          <mat-checkbox formControlName="addTeacher">Add Teachers</mat-checkbox>
+          <br>
+          <mat-checkbox formControlName="addCourse">Add Courses</mat-checkbox>
+          <br>
+          <mat-checkbox formControlName="addClass">Add Classes</mat-checkbox>
+        </div>
+      </div>
+
+      <div class="check-group" formGroupName="edit">
+        <mat-checkbox formControlName="editAll"
+          [checked]="editAll"
+          [indeterminate]="someEditComplete"
+          (change)="setEditAll($event.checked)"
+        >Edit All
+        </mat-checkbox>
+        <div class="checkbox-child-container">
+          <mat-checkbox formControlName="editStudent">Edit Students</mat-checkbox>
+          <br>
+          <mat-checkbox formControlName="editTeacher">Edit Teachers</mat-checkbox>
+          <br>
+          <mat-checkbox formControlName="editCourse">Edit Courses</mat-checkbox>
+          <br>
+          <mat-checkbox formControlName="editClass">Edit Classes</mat-checkbox>
+        </div>
+      </div>
+
+      <div class="check-group">
+        <mat-checkbox formControlName="setPayment">Set Payments</mat-checkbox>
+      </div>
+
+      <div class="check-group">
+        <mat-checkbox formControlName="editAdmin">Edit Admin</mat-checkbox>
+      </div>
+
+
+      <div class="btn-container ion-padding">
+        <ion-button expand="block" (click)="deleteAdmin()" [disabled]="formGroup.invalid">
+          <ion-spinner *ngIf="isDeleting" name="crescent"></ion-spinner>
+          <ion-text *ngIf="!isDeleting">Delete Admin</ion-text>
+        </ion-button>
+      </div>
+    </form>
+  </div>
+</ion-content>

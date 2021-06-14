@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "262953808641",
+    "project_id": "myschooladmin-31c30",
+    "storage_bucket": "myschooladmin-31c30.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:262953808641:android:c087b8bfa2d4051503e100",
+        "android_client_info": {
+          "package_name": "com.profeworld.myschooladmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "262953808641-4e44s5n3n3qrckbh3d6qkvtgbd8o038h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_hV0PB8o3PqH7o9ABuaXhOqa7xrBU2r8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "262953808641-4e44s5n3n3qrckbh3d6qkvtgbd8o038h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

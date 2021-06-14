@@ -1,0 +1,93 @@
+<mat-toolbar class="header secondary">
+  <span 
+  class="title animate__animated animate__faster"
+    [class.animate__fadeIn]="!searchMode" 
+    [class.animate__fadeOut]="searchMode"
+    >Teachers
+    <ion-badge *ngIf="noOfTeachers"class="toolbar-badge">{{ noOfTeachers }}</ion-badge>
+  </span>
+  
+  <span class="spacer"></span>
+  
+  <button mat-icon-button [matTooltip]="searchMode ? 'Cancel Search' : 'Search'" 
+  class="animate__animated animate__faster"
+    [class.animate__fadeIn]="!searchMode" 
+    [class.animate__fadeOut]="searchMode" (click)="enterSearchMode()" (click)="searchElem.setFocus()">
+    <mat-icon>search</mat-icon>
+  </button>
+
+  <div class="search-form ion-padding animate__animated animate__faster" [class.ion-hide]="inputFirstLoad"
+  [class.animate__fadeInRight]="searchMode && !inputFirstLoad" [class.animate__fadeOutRight]="!searchMode && !inputFirstLoad">
+    <button mat-icon-button (click)="exitSearchMode()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <ion-item lines="none">
+      <ion-input #searchElem placeholder="Search..." [(ngModel)]="searchString" (ngModelChange)="search()" [debounce]="1000"></ion-input>
+    </ion-item>
+  </div>
+
+  <div class="toolbar-underline animate__animated animate__faster"
+  [class.animate__fadeInRight]="searchMode" [class.animate__fadeOutRight]="!searchMode"></div>
+</mat-toolbar>
+
+<ion-content class="main-content">
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content>
+
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-text *ngIf="showError"><h5 class="ion-padding ion-text-center">{{ errMessage }}</h5></ion-text>
+  <div *ngIf="isLoading" class="ion-padding ion-text-center">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <div *ngIf="!searchMode" class="detail-cards-container">
+    <div class="detail-card" *ngFor="let card of cards">
+      <app-detail-card (btnClick)="view(card)"
+        [showImage]="card.showImage" [altImage]="card.altImage" [imgSrc]="card.imageSrc"
+        [imageText]="card.imageText" [detailsData]="card.details"></app-detail-card>
+    </div>
+  </div>
+
+  <div *ngIf="searchMode" class="detail-cards-container">
+    <div class="detail-card" *ngFor="let card of filterCards">
+      <app-detail-card (btnClick)="view(card)"
+      [showImage]="card.showImage" [altImage]="card.altImage" [imgSrc]="card.imageSrc"
+      [imageText]="card.imageText" [detailsData]="card.details"></app-detail-card>
+    </div>
+  </div>
+
+  <!-- <div *ngIf="sortMode" class="sort-section">
+
+    <div class="btn-toggle-container ion-text-center">
+      <br>
+      Sort by:
+      <mat-button-toggle-group name="Details" aria-label="Details" (change)="toggleBtnClick($event)">
+        <mat-button-toggle checked value="name">Name</mat-button-toggle>
+        <mat-button-toggle value="course">Course</mat-button-toggle>
+        <mat-button-toggle value="class">Classes</mat-button-toggle>
+        <mat-button-toggle value="latest">Latest</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    <div class="ion-padding">
+      <mat-accordion class="ion-padding">
+        <div *ngFor="let filterItem of filterData">
+          <app-expansion-cards [filterTitle]="filterItem.filterTitle" [filterCards]="filterItem.filterData"></app-expansion-cards>
+          <br>
+        </div>
+      </mat-accordion>
+    </div> 
+  </div> -->
+
+  <ion-fab cdkDrag cdkDragBoundary=".main-content" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="custom-secondary" matTooltip="Add Teacher" (click)="add()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-infinite-scroll #scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

@@ -1,0 +1,17 @@
+<div class="profile">
+  <div class="picture">
+    <ion-avatar class="ion-text-center" (click)="viewPictureAsync()" >
+      <ion-icon [class.no-picture]="hasImage" color="medium" [name]="icon"></ion-icon>
+      <ion-img [class.no-picture]="!hasImage" (ionError)="imgErr($event)" (ionImgDidLoad)="imgLoaded($event)" [src]="imgSrc"></ion-img>
+    </ion-avatar>
+  </div>
+    
+  <div class="ion-activatable btn" (click)="choosePictureAsync()" *ngIf="showEditBtn">
+    <ion-icon slot="icon-only" name="camera"></ion-icon>
+    <ion-ripple-effect></ion-ripple-effect>
+  </div>
+
+  <input type="file" class="ion-hide" id="pick-picture-epm" accept="image/*" (change)="onPictureChange($event)">
+  <input type="file" class="ion-hide" id="camera-picture-epm" accept="image/*" (change)="onPictureChange($event)" capture="camera">
+
+</div>

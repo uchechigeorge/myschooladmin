@@ -1,0 +1,50 @@
+<app-modal-header title="View Payments" (dismiss)="dismissModal()"></app-modal-header>
+
+<ion-content class="ion-padding main-content">  
+
+  <app-view-profile-pic [imgSrc]="DP" [canView]="false" [showEditBtn]="false"></app-view-profile-pic>
+  <br>
+  <div class="divider"></div>
+  <br>
+
+
+  <ion-text *ngIf="showError"><h5 class="ion-padding ion-text-center">{{ errMessage }}</h5></ion-text>
+  <div *ngIf="isLoading" class="ion-padding ion-text-center">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <form class="details-form">
+
+    <mat-form-field class="field-form" appearance="outline">
+      <mat-label>Student</mat-label>
+      <input matInput type="text" autocomplete="off" readonly [(ngModel)]="studentFullName" name="student">
+    </mat-form-field>
+
+    <mat-form-field class="field-form" appearance="outline">
+      <mat-label>Term</mat-label>
+      <mat-select (selectionChange)="onInputChange()" [formControl]="formControl" name="term">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let branch of selectTerms" [value]="branch.value">{{ branch.text }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+
+  <div class="detail-cards-container">
+    <div class="detail-card" *ngFor="let card of cards">
+      <app-detail-card (btnClick)="view(card)" [imgSrc]="card.imageSrc"
+      [showImage]="card.showImage" [altImage]="card.altImage"
+      [imageText]="card.imageText" [detailsData]="card.details"></app-detail-card>
+    </div>
+  </div>
+  
+  <ion-fab cdkDrag cdkDragBoundary=".main-content" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="custom-secondary" (click)="add()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-infinite-scroll #scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

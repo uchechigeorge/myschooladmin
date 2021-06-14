@@ -1,0 +1,31 @@
+<div class="card ion-padding" (dblclick)="btnClick(true)">
+  <button class="top-menu" mat-icon-button *ngIf="showMenu" (click)="menuOpen($event)">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <div class="card-container">
+
+    <div class="picture" *ngIf="showImage">
+      <ion-avatar class="avatar">
+        <div [class.no-picture]="hasImage">
+          <ion-icon name="person" *ngIf="altImage == 'icon'"></ion-icon>
+          <div class="initials" *ngIf="altImage == 'text'">
+            <ion-text class="initials-text"><h1>{{ imageText }}</h1></ion-text>
+          </div>
+        </div>
+        
+        <ion-img *ngIf="altImage == 'icon'" [class.no-picture]="!hasImage" (ionError)="imgErr($event)" (ionImgDidLoad)="imgLoaded($event)" [src]="imgSrc"></ion-img>
+      </ion-avatar>
+    </div>
+    
+    <div class="details">
+      <div class="detail" *ngFor="let detail of details.slice(0, 3)">
+        <ion-text>{{detail.title}}: </ion-text>
+        <ion-text [matTooltip]="detail.value">{{ detail.value }}</ion-text>
+      </div>
+    </div>
+  </div>
+
+  <div class="btn" *ngIf="showBtn">
+    <ion-button (click)="btnClick()" size="small">{{ btnText }}</ion-button>
+  </div>
+</div>

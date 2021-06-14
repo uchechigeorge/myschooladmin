@@ -1,0 +1,70 @@
+<app-modal-header title="Add Term" (dismiss)="dismissModal()"></app-modal-header>
+<ion-content class="ion-padding ion-text-center">
+
+  <div class="details">
+
+    <div class="profile-avatar">
+      <div class="picture">
+        <ion-avatar class="ion-text-center">
+          <ion-icon color="medium" name="add"></ion-icon>
+        </ion-avatar>
+      </div>
+    </div>
+    <br>
+    <form class="details-form" [formGroup]="formGroup">
+
+      <mat-form-field class="field-form" appearance="outline">
+        <mat-label>School Year</mat-label>
+        <input matInput type="text" formControlName="session" autocomplete="off" (input)="onInputChange()">
+        <mat-error *ngIf="formGroup.get('session').hasError('required')">School year is <strong>required</strong></mat-error>
+        <mat-error *ngIf="formGroup.get('session').hasError('maxlength')">Cannot exceed 50 characters</mat-error>
+
+        <mat-hint>Recommended Format: 20**/20**</mat-hint>
+      </mat-form-field>
+
+      <div class="ion-text-left">
+        <mat-checkbox formControlName="hasChildren" 
+        (change)="checkboxChange($event)" (input)="onInputChange()">Add Branches</mat-checkbox>
+      </div>
+      <br>
+
+      <div class="btns">
+        <ion-buttons>
+          <ion-button (click)="addBranch()" shape="round" class="icon" slot="icon-only" [disabled]="!hasChildren.value">
+            <ion-icon name="add"></ion-icon>
+          </ion-button>
+          <ion-button (click)="removeBranch()" shape="round" class="icon" slot="icon-only" [disabled]="!hasChildren.value">
+            <ion-icon name="remove"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </div>
+
+      <div class="" formArrayName="terms" *ngFor="let control of termBranches.controls; let i = index">
+
+        <mat-form-field class="field-form" appearance="outline">
+          <mat-label>Term</mat-label>
+          <input #term matInput type="text" [formControlName]="i" autocomplete="off" (input)="onInputChange()">
+          <mat-error *ngIf="termBranches.controls[i].hasError('required')">Term is <strong>required</strong></mat-error>
+          <mat-error *ngIf="termBranches.controls[i].hasError('matchSibling')">Cannot have duplicate term names</mat-error>
+          <mat-error *ngIf="termBranches.controls[i].hasError('maxlength')">Cannot exceed 50 characters</mat-error>
+
+          <span matSuffix>{{ getPosition(term.value) }}</span>
+        </mat-form-field>
+        
+      </div>
+
+      <div class="divider"></div>
+      <br>
+
+
+      <div class="btn-container ion-padding">
+        <ion-button expand="block" (click)="upload()" [disabled]="formGroup.invalid">
+          <ion-spinner *ngIf="isVerifying" name="crescent"></ion-spinner>
+          <ion-text *ngIf="!isVerifying">Add</ion-text>
+        </ion-button>
+      </div>
+    </form>
+
+  </div>
+
+</ion-content>

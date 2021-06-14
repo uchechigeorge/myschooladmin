@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar color="darker">
+    <ion-buttons slot="start">
+      <ion-button (click)="dismissModal()" class="icon">
+        <ion-icon slot="icon-only" md="arrow-back-outline"  ios="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ PageTitle }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="removeProfilePic()" class="icon">
+        <ion-icon slot="icon-only" md="trash-sharp" ios="trash-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="choosePicture()" class="icon">
+        <ion-icon slot="icon-only" md="image-sharp" ios="image-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="takePicture()" class="icon">
+        <ion-icon slot="icon-only" md="camera-sharp" ios="camera-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="darker">
+  <div class="container">
+    <div class="profile">
+      <ion-icon [class.no-picture]="hasImage" color="medium" name="person"></ion-icon>
+      <ion-img [class.no-picture]="!hasImage" (ionError)="imgErr($event)" (ionImgDidLoad)="imgLoaded($event)" [src]="imgSrc"></ion-img>
+    </div>
+    
+    <div class="btn-container" *ngIf="hasUploadedImage">
+      <ion-button expand="block" (click)="cancelUploadPic()">Cancel</ion-button>
+      <ion-button expand="block" (click)="uploadPic()">
+        <ion-text *ngIf="!isVerifying">Done</ion-text>
+        <ion-spinner *ngIf="isVerifying" name="crescent"></ion-spinner>
+      </ion-button>
+    </div>
+  </div>
+
+  <input type="file" class="ion-hide" id="pick-picture-pp" accept="image/*" (change)="onPictureChange($event)" >
+  <input type="file" class="ion-hide" id="camera-picture-pp" accept="image/*" (change)="onPictureChange($event)" capture="camera">
+
+</ion-content>

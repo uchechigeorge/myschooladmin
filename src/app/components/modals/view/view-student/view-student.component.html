@@ -1,0 +1,60 @@
+<app-modal-header title="View Student" (dismiss)="dismissModal()"></app-modal-header>
+
+<ion-content class="ion-padding ion-text-center">
+
+  <app-view-profile-pic (modalClosed)="getStudents()" updateType="student" [imgSrc]="DP" canView="true" [userId]="studentId"></app-view-profile-pic>
+  <br>
+  <div class="divider"></div>
+  <br>
+
+  <div *ngIf="isLoading" class="ion-padding ion-text-center">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+
+  <ion-text *ngIf="showError"><h5 class="ion-padding ion-text-center">{{ errMessage }}</h5></ion-text>
+
+  <form class="details-form" *ngIf="!isLoading && !showError">
+    
+    <div *ngFor="let input of details">
+      <ion-text class="ion-text-left" *ngIf="input.hasHeader"><h4>{{ input.headerTitle }}</h4></ion-text>
+      <app-edit-details-input #inputs
+      [id]="input.id"
+      [label]="input.label"
+      [model]="input.model"
+      [value]="input.value"
+      [type]="input.type"
+      [icon]="input.icon"
+      [validators]="input.valiators"
+      [directives]="input.directives"
+      [noEdit]="input.noEdit"
+      [selectMultiple]="input.selectMultiple"
+      [selectOptions]="input.selectOptions"
+      [multipleSelectOptions]="input.multipleSelectOptions"
+      [showSecondaryBtn]="input.showSecondaryBtn"
+      [secondaryIcon]="input.secondaryIcon"
+      [updateInput]="input.updateInput"
+      (secondaryBtnEvent)="input.secondaryBtnCLick()"
+      (onChangeEvent)="input.inputChange($event)"
+      ></app-edit-details-input>
+      <br><br>
+    </div>
+
+    <div class="btn-container ion-padding">
+      <ion-button expand="block" fill="outline" class="outline" (click)="setStudentActive()" [disabled]="showError">
+        <!-- <ion-spinner *ngIf="isDeleting" name="crescent"></ion-spinner> -->
+        <ion-text>Set Active</ion-text>
+      </ion-button>
+
+      <ion-button expand="block" fill="outline" class="outline" (click)="setStudentInactive()" [disabled]="showError">
+        <!-- <ion-spinner *ngIf="isDeleting" name="crescent"></ion-spinner> -->
+        <ion-text>Set Inactive</ion-text>
+      </ion-button>
+
+      <ion-button expand="block" (click)="showDeleteAlert()" [disabled]="showError">
+        <ion-spinner *ngIf="isDeleting" name="crescent"></ion-spinner>
+        <ion-text *ngIf="!isDeleting">Delete</ion-text>
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

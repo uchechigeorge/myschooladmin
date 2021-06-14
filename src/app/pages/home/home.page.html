@@ -1,0 +1,62 @@
+<ion-content class="main-content">
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content>
+
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <!-- <div [class.ion-hide]="!hasChart">
+    <div [class.ion-hide]="mobileQuery.matches">
+      <canvas class="chartElem" width="90" height="30"></canvas>
+    </div>
+    <div [class.ion-hide]="!mobileQuery.matches">
+      <canvas class="chartElem2" width="90" height="70"></canvas>
+    </div>
+  </div> -->
+<!-- 
+  <div class="graph-area" [class.ion-hide]="!hasChart">
+    <canvas class="chartElem" width="90" height="70"></canvas>
+  </div> -->
+
+  <div class="home-card-container ion-padding">
+    <app-home-card header="Students" [value]="getNumber(noOfStudents)" [toolTip]="noOfStudents"></app-home-card>
+    <app-home-card header="Teachers" [value]="getNumber(noOfTeachers)" [toolTip]="noOfTeachers"></app-home-card>
+    <app-home-card header="Courses" [value]="getNumber(noOfCourses)" [toolTip]="noOfCourses"></app-home-card>
+  </div>
+
+  <br>
+  <div class="btn-toggle-container ion-text-center">
+    <mat-button-toggle-group name="Details" aria-label="Details" (change)="toggleBtnClick($event)">
+      <mat-button-toggle checked value="students">Students</mat-button-toggle>
+      <mat-button-toggle value="teachers">Teachers</mat-button-toggle>
+      <mat-button-toggle value="courses">Courses</mat-button-toggle>
+      <!-- <mat-button-toggle value="payments">Payments</mat-button-toggle> -->
+    </mat-button-toggle-group>
+  </div>
+
+  <ion-text *ngIf="showError"><h5 class="ion-padding ion-text-center">{{ errMessage }}</h5></ion-text>
+
+  <div class="detail-cards-container">
+    <div class="detail-card" *ngFor="let card of cards">
+      <app-detail-card (btnClick)="card.btnClick()" [imgSrc]="card.imageSrc"
+      [showImage]="card.showImage" [altImage]="card.altImage" 
+      [imageText]="card.imageText" [detailsData]="card.details"></app-detail-card>
+    </div>
+  </div>
+
+  <ion-fab cdkDrag cdkDragBoundary=".main-content" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="custom-secondary">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button (click)="addStudent()" matTooltip="Add Student"><ion-icon name="person"></ion-icon></ion-fab-button>
+      <ion-fab-button (click)="addTeacher()" matTooltip="Add Teacher"><ion-icon name="man"></ion-icon></ion-fab-button>
+      <ion-fab-button (click)="addCourse()" matTooltip="Add Course"><ion-icon name="library"></ion-icon></ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+
+  <ion-infinite-scroll #scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

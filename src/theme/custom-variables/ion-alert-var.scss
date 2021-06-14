@@ -1,0 +1,13 @@
+ion-alert{
+  .alert-radio-group{
+    --ion-color-primary: #FFD740;
+  }
+
+  .alert-button{
+    color: var(--ion-color-custom-primary);
+  }
+
+  .alert-input-wrapper{
+    --ion-color-primary: #673AB7;
+  }
+}

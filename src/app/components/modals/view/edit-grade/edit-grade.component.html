@@ -1,0 +1,78 @@
+<app-modal-header title="Edit Grades" (dismiss)="dismissModal()"></app-modal-header>
+
+<ion-content class="ion-padding">
+  <div class="profile-avatar">
+    <div class="picture">
+      <ion-avatar class="ion-text-center">
+        <ion-icon color="medium" name="checkmark-done"></ion-icon>
+      </ion-avatar>
+    </div>
+  </div>
+  
+  <div *ngIf="isLoading" class="ion-padding ion-text-center">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+  
+  <ion-text *ngIf="showError"><h5 class="ion-padding ion-text-center">{{ errMessage }}</h5></ion-text>
+  
+  <div *ngIf="!isLoading && !showError">
+  
+    <form class="details-form">
+      <ion-text class="ion-text-left"><h4>Course Details</h4></ion-text>
+
+      <div *ngFor="let input of details">
+        <ion-text class="ion-text-left" *ngIf="input.hasHeader"><h4>{{ input.headerTitle }}</h4></ion-text>
+        <app-edit-details-input
+        [label]="input.label" 
+        [model]="input.model"
+        [type]="input.type"
+        [icon]="input.icon"
+        [noEdit]="input.noEdit"
+        [suffix]="input.suffix"
+        [validators]="input.valiators"
+        [selectMultiple]="input.selectMultiple"
+        [selectOptions]="input.selectOptions"
+        [multipleSelectOptions]="input.multipleSelectOptions"
+        [updateInput]="input.updateInput"
+        (onChangeEvent)="input.inputChange($event)"
+        ></app-edit-details-input>
+        <br><br>
+      </div>
+    </form>
+
+    <form class="details-form" [formGroup]="formGroup">
+
+      <div>
+        <mat-checkbox formControlName="canEdit">Edit</mat-checkbox>
+      </div>
+      <br>
+
+      <mat-form-field class="small-input left" appearance="outline" floatLabel="always">
+        <mat-label>Minimum</mat-label>
+        <input matInput type="number" formControlName="min" autocomplete="off" [readonly]="!formGroup.get('canEdit').value">
+        <mat-error *ngIf="formGroup.get('min').hasError('maxlength')">Cannot exceed 50 characters</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="small-input right" appearance="outline" floatLabel="always">
+        <mat-label>Maximum</mat-label>
+        <input matInput type="number" formControlName="max" autocomplete="off" [readonly]="!formGroup.get('canEdit').value">
+        <mat-error *ngIf="formGroup.get('max').hasError('maxlength')">Cannot exceed 50 characters</mat-error>
+      </mat-form-field>
+      
+      <div style="width: 35%; margin-left: auto;" class="ion-text-right">
+        <ion-button class="ion-text-right" (click)="editRange()" expand="block" size="small" fill="outline" class="outline" [disabled]="formGroup.invalid || !formGroup.get('canEdit').value">
+          <ion-spinner *ngIf="isEditingRange" name="crescent"></ion-spinner>
+          <ion-text *ngIf="!isEditingRange">Edit Range</ion-text>
+        </ion-button>
+      </div>
+
+      <div class="btn-container ion-padding">
+        <ion-button expand="block" (click)="showDeleteAlert()" [disabled]="showError">
+          <ion-spinner *ngIf="isDeleting" name="crescent"></ion-spinner>
+          <ion-text *ngIf="!isDeleting">Delete</ion-text>
+        </ion-button>
+      </div>
+    </form>
+  </div>
+
+</ion-content>

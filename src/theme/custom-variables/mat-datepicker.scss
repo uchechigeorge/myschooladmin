@@ -1,0 +1,22 @@
+body.dark{
+  mat-datepicker-toggle{
+    color: #ddd;
+  }
+
+  .mat-datepicker-content{
+    background-color: var(--ion-color-light);
+    color: var(--ion-color-light-contrast);
+    
+    .mat-calendar-previous-button::after, .mat-calendar-next-button::after {
+      color: var(--ion-color-light-contrast);
+    }
+
+    .mat-calendar-body-cell-content{
+      color: var(--ion-color-light-contrast);
+    }
+
+    .mat-calendar-body-today:not(.mat-calendar-body-selected){
+      border-color: rgba(var(--ion-color-light-contrast-rgb), 0.3);
+    }
+  }
+}

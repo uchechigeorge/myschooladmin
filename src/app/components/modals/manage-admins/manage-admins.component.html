@@ -1,0 +1,90 @@
+<app-modal-header title="Manage Admins" (dismiss)="dismissModal()"></app-modal-header>
+<ion-content class="main-content ion-padding ion-text-center">
+ 
+  <div class="profile-avatar">
+    <div class="picture">
+      <ion-avatar class="ion-text-center">
+        <ion-icon color="medium" name="people"></ion-icon>
+      </ion-avatar>
+    </div>
+  </div>
+
+  <ion-text *ngIf="showError"><h5 class="ion-padding ion-text-center">{{ errMessage }}</h5></ion-text>
+  <div *ngIf="isLoading" class="ion-padding ion-text-center">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+
+  <div class="" *ngIf="!isLoading">
+
+    <form class="details-form" *ngIf="!addMode">
+      <ion-text *ngIf="noOfAdmins" class="ion-text-left"><h6>Number of Admins: {{ noOfAdmins }}</h6></ion-text>
+      
+      <div *ngFor="let item of details">
+        <ion-text class="ion-text-left" *ngIf="item.hasHeader"><h4>{{ item.headerTitle }}</h4></ion-text>
+       
+        <mat-form-field class="field-form" appearance="outline">
+          <mat-label>{{ item.label }}</mat-label>
+          <input type="text" matInput autocomplete="off" readonly [value]="item.model">
+          <button (click)="item.secondaryBtnCLick()" mat-icon-button matSuffix>
+            <mat-icon>preview</mat-icon>
+          </button>
+        </mat-form-field>
+        <br><br>
+      </div>
+    </form>
+
+    <form class="details-form" *ngIf="addMode && isAuthorised" [formGroup]="addFormGroup">
+      <ion-text class="ion-text-left"><h6>Fill admin details</h6></ion-text>
+      <mat-form-field class="field-form" appearance="outline">
+        <mat-label>Username</mat-label>
+        <input type="text" matInput formControlName="username" autocomplete="off">
+
+        <mat-error *ngIf="addFormGroup.get('username').hasError('required')">Username is <strong>required</strong></mat-error>
+        <mat-error *ngIf="addFormGroup.get('username').hasError('maxlength')">Cannot exceed 50 characters</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="field-form" appearance="outline">
+        <mat-label>Password</mat-label>
+        <input [type]="hidePassword ? 'password' : 'text'" matInput formControlName="password" autocomplete="off">
+
+        <mat-error *ngIf="addFormGroup.get('password').hasError('required')">Password is <strong>required</strong></mat-error>
+        <mat-error *ngIf="addFormGroup.get('password').hasError('maxlength')">Cannot exceed 50 characters</mat-error>
+
+        <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
+          <mat-icon>{{ hidePassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-form-field class="field-form" appearance="outline">
+        <mat-label>Confirm Password</mat-label>
+        <input [type]="hidePassword2 ? 'password' : 'text'" matInput formControlName="confirmPassword" autocomplete="off">
+
+        <mat-error *ngIf="addFormGroup.get('confirmPassword').hasError('confirm')">Password does not match</mat-error>
+        <mat-error *ngIf="addFormGroup.get('confirmPassword').hasError('maxlength')">Cannot exceed 50 characters</mat-error>
+
+        <button mat-icon-button matSuffix (click)="hidePassword2 = !hidePassword2">
+          <mat-icon>{{ hidePassword2 ? 'visibility' : 'visibility_off' }}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <div class="btn-container ion-padding">
+        <ion-button expand="block" (click)="addAdmin($event)" [disabled]="addFormGroup.invalid">
+          <ion-spinner *ngIf="isAdding" name="crescent"></ion-spinner>
+          <ion-text *ngIf="!isAdding">Add</ion-text>
+        </ion-button>
+      </div>
+    </form>
+  </div>
+
+
+  <ion-fab cdkDrag cdkDragBoundary=".main-content" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="custom-secondary" (click)="toggleAddMode()">
+      <ion-icon [name]="addMode ? 'close' : 'add'"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-infinite-scroll #scroll threshold="100px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

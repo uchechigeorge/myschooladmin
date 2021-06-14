@@ -1,0 +1,89 @@
+<app-modal-header title="Add Payments" (dismiss)="dismissModal()"></app-modal-header>
+
+<ion-content class="ion-padding ion-text-center main-content">
+
+  <div class="profile-avatar">
+    <div class="picture">
+      <ion-avatar class="ion-text-center">
+        <ion-icon color="medium" name="add"></ion-icon>
+      </ion-avatar>
+    </div>
+  </div>
+  <br>
+
+  <form class="details-form" [formGroup]="formGroup">
+
+    <mat-form-field class="field-form" appearance="outline">
+      <mat-label>Term</mat-label>
+      <mat-select formControlName="term">
+        <mat-option value="">None</mat-option>
+        <mat-option *ngFor="let branch of selectTerms" [value]="branch.value">{{ branch.text }}</mat-option>
+      </mat-select>
+
+      <mat-error *ngIf="formGroup.get('term').hasError('required')">Term is <strong>required</strong></mat-error>
+
+    </mat-form-field>
+
+    <mat-form-field class="field-form" appearance="outline">
+      <mat-label>Class</mat-label>
+      <mat-select formControlName="class">
+        <mat-option value="">None</mat-option>
+        <mat-optgroup *ngFor="let class of selectClasses" [label]="class.label">
+          <mat-option *ngFor="let branch of class.options" [value]="branch.value">{{ branch.text }}</mat-option>
+        </mat-optgroup>
+      </mat-select>
+
+      <mat-error *ngIf="formGroup.get('class').hasError('required')">Class is <strong>required</strong></mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="field-form" appearance="outline">
+      <mat-label>Title</mat-label>
+      <input matInput type="text" formControlName="title" autocomplete="off">
+      <mat-error *ngIf="formGroup.get('title').hasError('required')">Fees Title is <strong>required</strong></mat-error>
+      <mat-error *ngIf="formGroup.get('title').hasError('maxlength')">Cannot exceed 50 characters</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="field-form" appearance="outline">
+      <mat-label>Amount</mat-label>
+      <input matInput [type]="'number'" formControlName="amount" autocomplete="off">
+      <mat-error *ngIf="formGroup.get('amount').hasError('required')">Amount is <strong>required</strong></mat-error>
+      <mat-error *ngIf="formGroup.get('amount').hasError('negative')">Enter valid amount</mat-error>
+      <mat-error *ngIf="formGroup.get('amount').hasError('maxlength')">Cannot exceed 50 characters</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="field-form" appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea #description matInput type="text" formControlName="description" autocomplete="off" maxlength="500"></textarea>
+
+      <mat-error *ngIf="formGroup.get('description').hasError('maxlength')">Cannot exceed 500 characters</mat-error>
+      <mat-hint align="end">{{ description.value.length }}/500</mat-hint>
+    </mat-form-field>
+
+    <ion-radio-group formControlName="option">
+      <ion-list-header class="ion-text-left">
+        <ion-label>Options</ion-label>
+      </ion-list-header>
+      
+      <ion-item>
+        <ion-label>None</ion-label>
+        <ion-radio slot="start" value="0"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Add for all classes</ion-label>
+        <ion-radio slot="start" value="1"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Add for all sibling classes</ion-label>
+        <ion-radio slot="start" value="2"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+
+    
+    <div class="btn-container ion-padding">
+      <ion-button expand="block" (click)="add($event)" [disabled]="formGroup.invalid">
+        <ion-spinner *ngIf="isVerifying" name="crescent"></ion-spinner>
+        <ion-text *ngIf="!isVerifying">Add</ion-text>
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

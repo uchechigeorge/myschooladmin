@@ -1,0 +1,54 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <strong>{{ filterTitle }}</strong>
+    </mat-panel-title>
+    <mat-panel-description *ngIf="showDescription">
+      {{ amountText }} : 3
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  <div class="panel-content">
+    <mat-toolbar>
+      <span 
+        class="toolbar-content animate__animated animate__faster"
+        [class.animate__fadeIn]="!searchMode" 
+        [class.animate__fadeOut]="searchMode" 
+        >{{ amountText }}: 3</span>
+      <span 
+        class="spacer toolbar-content animate__animated animate__faster"
+        [class.animate__fadeIn]="!searchMode" 
+        [class.animate__fadeOut]="searchMode"></span>
+      <button 
+        class="toolbar-content animate__animated animate__faster" 
+        [class.animate__fadeIn]="!searchMode" 
+        [class.animate__fadeOut]="searchMode" mat-icon-button (click)="enterSearchMode()">
+        <mat-icon>search</mat-icon>
+      </button>
+      <div class="search-form ion-padding animate__animated animate__faster" [class.animate__fadeInRight]="searchMode" [class.animate__fadeOutRight]="!searchMode">
+        <button mat-icon-button (click)="exitSearchMode()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <ion-item lines="none">
+          <ion-input placeholder="Search..." [(ngModel)]="searchString" (ngModelChange)="search()"></ion-input>
+        </ion-item>
+      </div>
+
+      <div class="toolbar-underline animate__animated animate__faster"
+      [class.animate__fadeInRight]="searchMode" [class.animate__fadeOutRight]="!searchMode"></div>
+    </mat-toolbar>
+    
+    <div class="detail-cards-container" *ngIf="!searchMode">
+      <div class="detail-card" *ngFor="let card of cards">
+        <app-detail-card [showImage]="card.showImage" [altImage]="card.altImage" [imageText]="card.imageText" [detailsData]="card.details"></app-detail-card>
+      </div>
+    </div>
+
+    <div class="detail-cards-container" *ngIf="searchMode">
+      <div class="detail-card" *ngFor="let card of filterCards">
+        <app-detail-card [showImage]="card.showImage" [altImage]="card.altImage" [imageText]="card.imageText" [detailsData]="card.details"></app-detail-card>
+      </div>
+    </div>
+  </div>
+
+</mat-expansion-panel>

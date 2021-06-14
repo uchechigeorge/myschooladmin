@@ -1,0 +1,27 @@
+<app-modal-header title="Take a picture" (dismiss)="dismissModal()"></app-modal-header>
+<ion-content>
+  <webcam [height]="700" [width]="500" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="!imageTaken"
+      [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable" [videoOptions]="videoOptions" (cameraSwitched)="cameraWasSwitched($event)"
+      (initError)="handleInitError($event)"></webcam>
+
+  <ion-img [src]="imageSrc" *ngIf="imageTaken">
+
+  </ion-img>
+     
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed" *ngIf="!imageTaken">
+    <ion-fab-button color="custom-secondary" (click)="triggerSnapshot();">
+      <ion-icon name="camera"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-fab class="btns"  vertical="bottom" *ngIf="imageTaken">
+    <ion-row class="ion-text-center">
+      <ion-col>
+        <ion-fab-button color="custom-secondary" (click)="confirm()"><ion-icon name="checkmark"></ion-icon></ion-fab-button>
+      </ion-col>
+      <ion-col>
+        <ion-fab-button color="danger" (click)="retake()"><ion-icon name="close"></ion-icon></ion-fab-button>
+      </ion-col>
+    </ion-row>
+</ion-fab>
+</ion-content>

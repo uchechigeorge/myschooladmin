@@ -1,0 +1,55 @@
+<app-modal-header title="Add Grade" (dismiss)="dismissModal()"></app-modal-header>
+<ion-content class="ion-padding ion-text-center">
+ 
+  <div class="details">
+
+    <div class="profile-avatar">
+      <div class="picture">
+        <ion-avatar class="ion-text-center">
+          <ion-icon color="medium" name="add"></ion-icon>
+        </ion-avatar>
+      </div>
+    </div>
+    <br>
+
+    <ion-text class="ion-text-left"><h4>Fill grade details</h4></ion-text>
+    <form class="details-form" [formGroup]="formGroup">
+
+      <mat-form-field class="field-form" appearance="outline">
+        <mat-label>Grade</mat-label>
+        <input matInput type="text" formControlName="grade" autocomplete="off">
+        <mat-error *ngIf="formGroup.get('grade').hasError('required')">Grade is <strong>required</strong></mat-error>
+        <mat-error *ngIf="formGroup.get('grade').hasError('maxlength')">Cannot exceed 50 characters</mat-error>
+      </mat-form-field>
+    
+      <mat-form-field class="field-form" appearance="outline">
+        <mat-label>Remark</mat-label>
+        <textarea #remarkElem matInput type="text" formControlName="remark" maxlength="50" autocomplete="off"></textarea>
+        <mat-error *ngIf="formGroup.get('remark').hasError('maxlength')">Cannot exceed 50 characters</mat-error>
+
+        <mat-hint align="end">{{ remarkElem.value.length }}/50</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field class="small-input left" appearance="outline">
+        <mat-label>Minimum</mat-label>
+        <input matInput type="number" formControlName="min" autocomplete="off">
+        <mat-error *ngIf="formGroup.get('min').hasError('maxlength')">Cannot exceed 50 characters</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="small-input right" appearance="outline">
+        <mat-label>Maximum</mat-label>
+        <input matInput type="number" formControlName="max" autocomplete="off">
+        <mat-error *ngIf="formGroup.get('max').hasError('maxlength')">Cannot exceed 50 characters</mat-error>
+      </mat-form-field>
+      
+    
+      <div class="btn-container ion-padding">
+        <ion-button expand="block" (click)="add()" [disabled]="formGroup.invalid">
+          <ion-spinner *ngIf="isAdding" name="crescent"></ion-spinner>
+          <ion-text *ngIf="!isAdding">Add</ion-text>
+        </ion-button>
+      </div>
+    </form>
+  </div>
+    
+</ion-content>
